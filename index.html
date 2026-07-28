@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumis — a puzzle about lighting a reef</title>
+<meta name="description" content="Lumis is an Android puzzle game about lighting a hexagonal crystal reef. One tile lights its neighbours at half. No timer, no score, nothing to lose.">
+<meta name="theme-color" content="#0a1628">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,0..100,0..1&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- The reef itself. Everything else sits on top of this. -->
+<canvas id="reef" class="reef" aria-hidden="true"></canvas>
+
+<a class="skip" href="#start">Skip to content</a>
+
+<!-- Depth rail: the page descends 0 m → 400 m, which is also the route from
+     World A (Crystal Reef) to World B (Deep Reef). -->
+<div class="rail" aria-hidden="true">
+  <span class="rail__read"><span id="rail-depth">0</span> m</span>
+  <span class="rail__line"></span>
+</div>
+
+<header class="masthead">
+  <span class="wordmark">
+    <svg class="wordmark__glyph" viewBox="-14 -16 28 32" aria-hidden="true">
+      <polygon points="0.00,-13.60 11.78,-6.80 11.78,6.80 0.00,13.60 -11.78,6.80 -11.78,-6.80"/>
+    </svg>
+    Lumis
+  </span>
+  <!-- REPLACE: Play Store listing URL -->
+  <a class="link" href="#get">Get the game</a>
+</header>
+
+<main id="start">
+
+  <section class="stratum stratum--surface">
+    <p class="eyebrow">Android · Crystal Reef</p>
+    <h1 class="display">Light travels farther<br>than you think.</h1>
+    <p class="lede">
+      Lumis is a puzzle about lighting a reef, one crystal at a time.
+      No timer. No score. Nothing you can lose.
+    </p>
+    <p class="nudge" id="nudge">
+      <span class="nudge__dot"></span>
+      <span class="nudge__hover">Move across the water</span>
+      <span class="nudge__touch">Touch the water</span>
+    </p>
+  </section>
+
+  <section class="stratum stratum--calm">
+    <h2 class="head">Nothing here can be failed.</h2>
+    <p class="body">
+      There is no clock and no score. A level ends when the reef is lit,
+      whether that takes you forty seconds or four nights. Put it down
+      mid-puzzle and it waits exactly where you left it.
+    </p>
+  </section>
+
+  <section class="stratum stratum--rule">
+    <h2 class="head">One crystal lights its neighbours at half.</h2>
+    <p class="body">
+      Touch a crystal and it takes full light. The six around it take half.
+      The ring beyond takes a quarter. Every puzzle in the game is that one
+      rule, folded into a shape you have not seen before.
+    </p>
+
+    <figure class="fall">
+  <svg class="fall__svg" viewBox="-68.6 -61.6 137.1 123.2" role="img" aria-label="A lit crystal at full brightness, its six neighbours at half, and the ring beyond at a quarter.">
+    <polygon class="fall__cell fall__cell--0" points="0.00,-13.60 11.78,-6.80 11.78,6.80 0.00,13.60 -11.78,6.80 -11.78,-6.80"/>
+    <polygon class="fall__cell fall__cell--1" points="-25.98,-13.60 -14.20,-6.80 -14.20,6.80 -25.98,13.60 -37.76,6.80 -37.76,-6.80"/>
+    <polygon class="fall__cell fall__cell--1" points="-12.99,8.90 -1.21,15.70 -1.21,29.30 -12.99,36.10 -24.77,29.30 -24.77,15.70"/>
+    <polygon class="fall__cell fall__cell--1" points="-12.99,-36.10 -1.21,-29.30 -1.21,-15.70 -12.99,-8.90 -24.77,-15.70 -24.77,-29.30"/>
+    <polygon class="fall__cell fall__cell--1" points="12.99,8.90 24.77,15.70 24.77,29.30 12.99,36.10 1.21,29.30 1.21,15.70"/>
+    <polygon class="fall__cell fall__cell--1" points="12.99,-36.10 24.77,-29.30 24.77,-15.70 12.99,-8.90 1.21,-15.70 1.21,-29.30"/>
+    <polygon class="fall__cell fall__cell--1" points="25.98,-13.60 37.76,-6.80 37.76,6.80 25.98,13.60 14.20,6.80 14.20,-6.80"/>
+    <polygon class="fall__cell fall__cell--2" points="-51.96,-13.60 -40.18,-6.80 -40.18,6.80 -51.96,13.60 -63.74,6.80 -63.74,-6.80"/>
+    <polygon class="fall__cell fall__cell--2" points="-38.97,8.90 -27.19,15.70 -27.19,29.30 -38.97,36.10 -50.75,29.30 -50.75,15.70"/>
+    <polygon class="fall__cell fall__cell--2" points="-25.98,31.40 -14.20,38.20 -14.20,51.80 -25.98,58.60 -37.76,51.80 -37.76,38.20"/>
+    <polygon class="fall__cell fall__cell--2" points="-38.97,-36.10 -27.19,-29.30 -27.19,-15.70 -38.97,-8.90 -50.75,-15.70 -50.75,-29.30"/>
+    <polygon class="fall__cell fall__cell--2" points="0.00,31.40 11.78,38.20 11.78,51.80 0.00,58.60 -11.78,51.80 -11.78,38.20"/>
+    <polygon class="fall__cell fall__cell--2" points="-25.98,-58.60 -14.20,-51.80 -14.20,-38.20 -25.98,-31.40 -37.76,-38.20 -37.76,-51.80"/>
+    <polygon class="fall__cell fall__cell--2" points="25.98,31.40 37.76,38.20 37.76,51.80 25.98,58.60 14.20,51.80 14.20,38.20"/>
+    <polygon class="fall__cell fall__cell--2" points="0.00,-58.60 11.78,-51.80 11.78,-38.20 0.00,-31.40 -11.78,-38.20 -11.78,-51.80"/>
+    <polygon class="fall__cell fall__cell--2" points="38.97,8.90 50.75,15.70 50.75,29.30 38.97,36.10 27.19,29.30 27.19,15.70"/>
+    <polygon class="fall__cell fall__cell--2" points="25.98,-58.60 37.76,-51.80 37.76,-38.20 25.98,-31.40 14.20,-38.20 14.20,-51.80"/>
+    <polygon class="fall__cell fall__cell--2" points="38.97,-36.10 50.75,-29.30 50.75,-15.70 38.97,-8.90 27.19,-15.70 27.19,-29.30"/>
+    <polygon class="fall__cell fall__cell--2" points="51.96,-13.60 63.74,-6.80 63.74,6.80 51.96,13.60 40.18,6.80 40.18,-6.80"/>
+  </svg>
+      <figcaption class="fall__key">
+        <span class="fall__step"><b>100</b> the crystal you touch</span>
+        <span class="fall__step"><b>50</b> its six neighbours</span>
+        <span class="fall__step"><b>25</b> the ring beyond</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="stratum stratum--deep" id="get">
+    <h2 class="head">Below four hundred metres, the reef makes its own light.</h2>
+    <p class="body">
+      Deep Reef is the second world. Same rule, no sunlight — every glow down
+      here came from a crystal you lit yourself. It unlocks once and stays
+      unlocked.
+    </p>
+    <!-- REPLACE: Play Store listing URL -->
+    <a class="cta" href="#">Get Lumis on Google Play</a>
+    <p class="fine">Android 5.0 and up · plays offline · no ads</p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>Lumis</span>
+  <span class="footer__depth">400 m</span>
+</footer>
+
+<script src="lattice.js"></script>
+</body>
+</html>
