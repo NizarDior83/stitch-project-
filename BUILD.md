@@ -8,7 +8,33 @@ this file supplies the architecture, the prompt sequence, and the verification b
 
 ---
 
-## 1. Prerequisites — get the Stitch output onto disk first
+> ## ⚠ THE DESIGNS ARE ATTACHED. DO NOT DESIGN ANYTHING.
+>
+> Every screen of this site has already been designed in Stitch and is attached
+> to this project as **two files per screen**:
+>
+> - **`.stitch/designs/{slug}.html`** — the real markup, with the real Tailwind
+>   config, the real class names, the real DOM structure.
+> - **`.stitch/designs/{slug}.png`** — the screenshot of that screen as it
+>   actually renders.
+>
+> **The agent's job is transcription and architecture, not design.** Layout,
+> spacing, hierarchy, section order, component composition and copy are already
+> decided and visible in those two files. Nothing in this build is an invitation
+> to improve, reinterpret, modernise or "clean up" the design.
+>
+> **Before writing code for any screen, open both files for that screen.** The
+> `.png` tells you what it must look like. The `.html` tells you how Stitch
+> built it and which tokens it used. Building from one without the other is the
+> single most common way this goes wrong: the screenshot alone loses the token
+> values, and the markup alone loses the visual intent.
+>
+> If a screen's HTML and PNG are missing, **stop and ask** — do not invent a
+> design to fill the gap.
+
+---
+
+## 1. Prerequisites — the attached designs, and where they must live
 
 Antigravity cannot see your Stitch project. Export every screen before writing a
 single prompt.
@@ -37,6 +63,24 @@ Slugs, matching the routes built later:
 home  how-it-works  pricing  integrations  coverage  about  track
 quote  help  contact  signin  signup  terms  privacy  prohibited-items
 ```
+
+That is **30 attached files — 15 HTML and 15 PNG.** Confirm all 30 exist before
+prompt 1. A missing pair means that screen gets designed by an agent instead of
+by you, which is exactly what this pipeline exists to prevent.
+
+### Anti-patterns — these are how the attachment gets ignored in practice
+
+- ❌ Building a screen from the PNG alone. You lose the token values and the
+  real DOM structure.
+- ❌ Building a screen from the HTML alone. You lose the visual intent — Stitch
+  markup does not read the way it renders.
+- ❌ Building a screen from `DESIGN.md` because it is easier to read than the
+  export. The spec is what was *asked for*; the export is what was *made*.
+- ❌ Letting the agent generate a placeholder image, illustration or mockup
+  where an attached design already exists.
+- ❌ Letting the agent "improve" spacing, hierarchy or section order because it
+  judges the attached design suboptimal.
+- ❌ Editing, regenerating or reformatting anything inside `.stitch/designs/`.
 
 ---
 
@@ -71,9 +115,28 @@ reinventing conventions each session.
 
 ## Project
 Marketing and self-service website for Shipmart, a cross-border parcel service
-for eCommerce merchants. 15 pages. Visual design is already done — it lives in
-`.stitch/designs/` as exported HTML plus screenshots. Your job is to turn those
-into a maintainable Next.js application, not to redesign them.
+for eCommerce merchants. 15 pages.
+
+## THE DESIGNS ARE ALREADY DONE AND ATTACHED — READ THIS FIRST
+Every screen exists as two attached files in `.stitch/designs/`:
+- `{slug}.html` — the exported markup, with the authoritative `tailwind.config`
+  in its `<head>`, the real class names and the real DOM structure
+- `{slug}.png` — the screenshot of how that screen actually renders
+
+You are not designing this site. It is designed. You are converting attached
+designs into a maintainable Next.js application.
+
+Before you write a single line of code for a screen, you MUST open BOTH files
+for that screen. Not one. Both. The PNG carries the visual intent; the HTML
+carries the tokens and structure. If you have not opened both, you are not
+ready to build that screen.
+
+Do not improve, modernise, simplify, reinterpret or "clean up" any design. If
+something in a design looks wrong to you, build it as designed and raise it in
+your walkthrough — do not silently change it.
+
+If a screen's HTML or PNG is missing, STOP and ask. Never invent a design to
+fill a gap.
 
 ## Stack
 - Next.js (App Router) + TypeScript, strict mode
@@ -111,9 +174,13 @@ data/                   # all static copy, lists, and mock data
 .stitch/designs/        # source designs — READ ONLY, never edit
 
 ## Rules for the agent
-- Read the matching `.stitch/designs/{slug}.png` before building any page.
-  Build to the screenshot, not to your own idea of the layout.
-- Never edit anything inside `.stitch/designs/`. It is the source of truth.
+- Open BOTH `.stitch/designs/{slug}.png` and `.stitch/designs/{slug}.html`
+  before building any screen. Build to the attached design, never to your own
+  idea of the layout.
+- Never edit, move, delete or regenerate anything inside `.stitch/designs/`.
+  Those are attached source designs and are read-only.
+- Never generate an image, illustration or mockup to stand in for an attached
+  design. The designs exist; use them.
 - Every component file exports a `Readonly` TypeScript interface named
   `{ComponentName}Props`. No exceptions, including page-level components.
 - Every reusable pattern becomes its own component file. Monolithic page files
@@ -275,8 +342,9 @@ value, and any place the Stitch export differed from brand-guidelines.md.
 
 ```
 CONTEXT:
-Tokens are wired. Every one of the 15 pages shares a header and footer, visible
-in @.stitch/designs/home.png.
+Tokens are wired. Every one of the 15 pages shares a header and footer. Both are
+already designed and attached: @.stitch/designs/home.png shows how they render,
+@.stitch/designs/home.html contains the exact markup Stitch produced for them.
 
 TASK:
 Build the site shell: header, footer, and the layout primitives every page uses.
@@ -293,7 +361,9 @@ FILES TO LEAVE ALONE:
 @.stitch/designs/, @tailwind.config.ts
 
 RULES:
-- Read @.stitch/designs/home.png before building; match it
+- Open BOTH @.stitch/designs/home.png and @.stitch/designs/home.html before
+  building. Lift the header and footer structure from the attached HTML; match
+  the attached screenshot. Do not design your own
 - Header: sticky, wordmark left linking to /, four centre links, then a "Track a
   parcel" text link, a secondary "Sign in" button, a primary "Get a quote" button
 - Below 1024px the centre links collapse into a hamburger; the primary button
@@ -319,7 +389,11 @@ Tab order runs left to right with a visible focus ring throughout.
 ```
 CONTEXT:
 Shell is built. Before any page work, the shared vocabulary needs to exist so
-pages compose rather than duplicate.
+pages compose rather than duplicate. Every primitive already appears somewhere
+in the attached designs — buttons and cards in @.stitch/designs/home.html,
+inputs and selects in @.stitch/designs/quote.html, badges in
+@.stitch/designs/track.html, tables in @.stitch/designs/coverage.html,
+accordions in @.stitch/designs/pricing.html.
 
 TASK:
 Build the reusable UI primitives, styled to our tokens. No page work in this task.
@@ -338,6 +412,9 @@ FILES TO LEAVE ALONE:
 @app/, @.stitch/designs/
 
 RULES:
+- Open the attached HTML files listed above and take each primitive's real
+  structure, sizing and states from them. Do not invent a component API that the
+  attached designs do not support
 - Install shadcn/ui primitives for Accordion and Select, then restyle to tokens.
   Build the rest directly
 - Input uses the control-border token, never hairline. Label is a real <label>
@@ -362,7 +439,9 @@ review.
 ```
 CONTEXT:
 Shell and primitives exist. The home page is the primary conversion page and has
-nine sections. Reference: @.stitch/designs/home.png and @.stitch/designs/home.html
+nine sections. It is already designed and attached — @.stitch/designs/home.png
+is how it must look, @.stitch/designs/home.html is how Stitch built it. Open
+both before you start.
 
 TASK:
 Build the home page and the marketing section components it introduces.
@@ -383,7 +462,8 @@ FILES TO LEAVE ALONE:
 @components/layout/, @components/ui/, @.stitch/designs/
 
 RULES:
-- Read home.png first and build to it
+- Open both attached files first and build to them. The section order, spacing,
+  hierarchy and copy are already decided there — transcribe, do not redesign
 - Section order: hero, trust strip, three-pillar grid, narrative explainer,
   three-step timeline, dark problem band, network section, macro closing block
 - Pillar titles are lower-case: quote / clear / track
@@ -411,8 +491,9 @@ feature per prompt is the rule that keeps the agent from rewriting neighbours.
 
 ```
 CONTEXT:
-Shell, primitives and home page are built. Building the {PAGE NAME} page.
-Reference: @.stitch/designs/{slug}.png and @.stitch/designs/{slug}.html
+Shell, primitives and home page are built. Building the {PAGE NAME} page. It is
+already designed and attached: @.stitch/designs/{slug}.png is how it must look,
+@.stitch/designs/{slug}.html is how Stitch built it. Open both before you start.
 
 TASK:
 Build the {PAGE NAME} page at route {ROUTE}, extracting any new reusable
@@ -427,7 +508,8 @@ FILES TO LEAVE ALONE:
 @app/page.tsx, @components/layout/, @.stitch/designs/
 
 RULES:
-- Read {slug}.png first and build to it
+- Open both attached files first and build to them. Do not redesign, simplify or
+  reorder anything the attached design already decided
 - Reuse existing components from @components/ui/ and @components/marketing/
   before creating anything new
 - All copy in @data/{slug}.ts
@@ -459,7 +541,10 @@ throughout. `npx tsc --noEmit` passes.
 CONTEXT:
 Marketing pages are built. Track is a public utility page used mostly by
 recipients on phones, often when a parcel is late. It has five distinct states.
-Reference: @.stitch/designs/track.png
+The design is attached: @.stitch/designs/track.png and
+@.stitch/designs/track.html. Open both before you start. The attached design
+shows one state — derive the other four from it by keeping the same layout,
+components and spacing, changing only content and status.
 
 TASK:
 Build the tracking page with all states, wired to a mock data layer.
@@ -478,6 +563,8 @@ FILES TO LEAVE ALONE:
 @app/quote/, @components/marketing/, @.stitch/designs/
 
 RULES:
+- Open both attached track files first. Every state you build must be visually
+  consistent with the attached design — same shell, same card, same timeline
 - Mobile-first. The input occupies the first screen on a 375px viewport
 - Five states, all built: in transit, held at customs, delivered, exception,
   not found
@@ -504,7 +591,10 @@ and exception states are visually distinct in greyscale.
 ```
 CONTEXT:
 This is the primary conversion path. It appears twice: the full page at /quote
-and an embedded estimator on /pricing. Reference: @.stitch/designs/quote.png
+and an embedded estimator on /pricing. Both designs are attached —
+@.stitch/designs/quote.png and @.stitch/designs/quote.html for the full page,
+@.stitch/designs/pricing.png and @.stitch/designs/pricing.html for the embedded
+version. Open all four before you start.
 
 TASK:
 Build the quote form with live cost summary as one shared component used in
@@ -524,6 +614,8 @@ FILES TO LEAVE ALONE:
 @app/track/, @components/marketing/, @.stitch/designs/
 
 RULES:
+- Open the attached quote and pricing files first. Field order, grouping and the
+  summary panel layout are already decided there — transcribe them
 - react-hook-form with a zod schema in @lib/schemas/quote.ts
 - Validate on blur, never submit-only
 - Errors render directly beneath the offending field, in words, with a fix.
@@ -554,7 +646,9 @@ reachable by keyboard with a visible focus ring and a clickable label.
 ```
 CONTEXT:
 Sign in and create account share a split layout: form left, brand panel right,
-no global header. Reference: @.stitch/designs/signin.png and signup.png
+no global header. Both designs are attached — @.stitch/designs/signin.png,
+@.stitch/designs/signin.html, @.stitch/designs/signup.png and
+@.stitch/designs/signup.html. Open all four before you start.
 
 TASK:
 Build both auth pages with a shared layout. Forms validate and show states but
@@ -572,6 +666,8 @@ FILES TO LEAVE ALONE:
 @app/layout.tsx, @components/layout/SiteHeader.tsx, @.stitch/designs/
 
 RULES:
+- Open all four attached auth files first and build the split layout exactly as
+  designed. The brand panel content comes from the attached design, not from you
 - Route group (auth) so these bypass the global header. Wordmark sits above the
   form and links to /
 - PasswordField has a show/hide toggle with a correct aria-label and, on signup,
@@ -598,6 +694,10 @@ fully keyboard-navigable.
 CONTEXT:
 Three legal documents share one reading layout: sticky table of contents left,
 body right. Prohibited items additionally has interactive lookup and tables.
+All three designs are attached: @.stitch/designs/terms.png + terms.html,
+@.stitch/designs/privacy.png + privacy.html, and
+@.stitch/designs/prohibited-items.png + prohibited-items.html. Open them before
+you start.
 
 TASK:
 Build the shared document layout and all three legal pages.
@@ -616,6 +716,8 @@ FILES TO LEAVE ALONE:
 @app/page.tsx, @components/marketing/, @.stitch/designs/
 
 RULES:
+- Open the attached legal design files first and take the reading layout,
+  TOC placement and callout styling from them
 - TOC is sticky, generated from headings, highlights the active section on scroll
   via IntersectionObserver, and is keyboard-navigable
 - Body capped near 65 characters. Headings carry stable anchor ids for deep links
@@ -688,6 +790,11 @@ FILES TO LEAVE ALONE:
 @.stitch/designs/, @data/ unless copy is itself the defect
 
 RULES:
+- Fidelity check first: for every route, open the attached
+  @.stitch/designs/{slug}.png and compare it side by side with a browser-agent
+  screenshot of the built page at the same width. Report every place the build
+  diverges from the attached design, and fix it unless the divergence is an
+  accessibility fix — in which case say so explicitly
 - Test every route at 375, 768, 1024 and 1440
 - Verify: text contrast at least 4.5:1 · visible focus on every interactive
   element · hit targets at least 44x44px with 8px separation · every input has a
@@ -698,7 +805,9 @@ RULES:
 - Report each defect with its route, breakpoint, and fix
 
 EXPECTED OUTPUT:
-A table of every route against every check, all passing. Lighthouse
+A side-by-side fidelity table of all 15 routes: attached design screenshot
+against built page screenshot, with any divergence named and explained. A table
+of every route against every accessibility check, all passing. Lighthouse
 accessibility 95+ on all 15 routes. Screenshots at all four breakpoints stored
 in Artifacts. Keyboard-only traversal of the full site with no trap and no
 invisible focus.
@@ -770,6 +879,8 @@ AI Studio is browser-based prompt-to-app, better for prototyping than for a
 | Destructive terminal commands | Review-driven mode always. Never Turbo on this project. |
 | Hallucination from too much context | Narrow `@file` references only. Never paste the whole codebase. |
 | Design drift across pages | Tokens come from the Stitch export once, in prompt 2. Pages consume tokens, never raw hex. |
+| Agent designs instead of transcribing | Every page prompt names both attached files and requires opening both. Prompt 12 runs a side-by-side fidelity check against the attached PNGs. |
+| Agent generates images to fill gaps | `GEMINI.md` forbids it outright. Antigravity has an image model built in and will use it unprompted if a visual seems missing. |
 | Placeholder stats reaching production | `[[placeholders]]` throw at build time in production. Do not weaken this. |
 | Quota exhaustion mid-build | Flash for layout transcription, Pro for prompts 1, 2, 4, 9. Free tier is ~20 requests/day. |
 | Stitch exports drift from DESIGN.md | The export wins — it is what the screenshots show. Prompt 2 logs every discrepancy. |
