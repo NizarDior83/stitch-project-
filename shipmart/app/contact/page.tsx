@@ -17,11 +17,7 @@ const CHANNELS = [
   { icon: "mail" as const, title: "Press or media", body: "Interviews, brand assets, company facts.", sla: "Within three working days" },
 ];
 
-export default function ContactPage({
-  searchParams,
-}: {
-  readonly searchParams?: { readonly topic?: string };
-}) {
+export default function ContactPage() {
   return (
     <Shell>
       <PageHero
@@ -47,7 +43,7 @@ export default function ContactPage({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
           <div className="lg:col-span-7">
-            <ContactForm initialTopic={searchParams?.topic} />
+            <ContactForm />
           </div>
           <div className="lg:col-span-5 flex flex-col gap-stack-md">
             <Card>

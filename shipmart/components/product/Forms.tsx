@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Field, inputClass } from "@/components/ui";
 import { Icon } from "@/components/ui/Icon";
 
@@ -23,7 +23,15 @@ export interface ContactFormProps {
 export function ContactForm({ initialTopic }: ContactFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [topic, setTopic] = useState(initialTopic && TOPICS.some((t) => t.id === initialTopic) ? initialTopic : "support");
+  const [topic, setTopic] = useState(
+    initialTopic && TOPICS.some((t) => t.id === initialTopic) ? initialTopic : "support"
+  );
+
+  // Read ?topic= on the client so this page stays statically exportable.
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get("topic");
+    if (t && TOPICS.some((x) => x.id === t)) setTopic(t);
+  }, []);
   const [reference, setReference] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});

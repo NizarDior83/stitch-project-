@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { InstallPrompt } from "@/components/layout/InstallPrompt";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://shipmart.example.com"),
@@ -17,6 +18,8 @@ export const metadata: Metadata = {
       "Cross-border parcel shipping for eCommerce merchants. Landed cost before you commit.",
   },
   twitter: { card: "summary_large_image" },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: { capable: true, title: "Shipmart", statusBarStyle: "default" },
 };
 
 export default function RootLayout({ children }: { readonly children: React.ReactNode }) {
@@ -29,7 +32,7 @@ export default function RootLayout({ children }: { readonly children: React.Reac
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
           rel="stylesheet"
         />
-        <meta name="theme-color" content="#f9f9ff" />
+        <meta name="theme-color" content="#003ec7" />
       </head>
       <body>
         <a
@@ -39,6 +42,7 @@ export default function RootLayout({ children }: { readonly children: React.Reac
           Skip to content
         </a>
         {children}
+        <InstallPrompt />
       </body>
     </html>
   );
