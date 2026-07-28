@@ -7,9 +7,29 @@ on a machine that has the SDK.
 
 ## What this app is
 
-A WebView shell that loads the **exported Next.js site from the APK's own
+A WebView shell that serves the **exported Next.js site from the APK's own
 assets**. No network is required to use it — which matters, because a parcel app
 is most often opened somewhere with bad signal.
+
+### Why it serves over https, not file://
+
+The Next.js export references assets with absolute paths (`/_next/static/...`).
+Loaded as `file:///android_asset/index.html`, those resolve to `file:///_next/...`
+— which does not exist, so the page renders as unstyled HTML with no JavaScript.
+
+`MainActivity` therefore serves the assets through `WebViewAssetLoader` on the
+virtual origin `https://appassets.androidplatform.net`, where absolute paths
+resolve correctly. It also gives the page a real origin, so `localStorage`
+works. Nothing leaves the device.
+
+Two consequences worth knowing if you edit this:
+
+- The exported site must sit at the **assets root** (`app/src/main/assets/`),
+  not in a subfolder, or `/_next/...` will not map. The Gradle `copyWebAssets`
+  task handles this.
+- The export uses `trailingSlash: true`, so routes are directories. The custom
+  `IndexAwarePathHandler` appends `index.html`, which `AssetsPathHandler` does
+  not do on its own.
 
 ## Prerequisites
 

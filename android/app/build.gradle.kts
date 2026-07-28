@@ -45,7 +45,10 @@ val webOut = rootProject.file("../shipmart/out")
 
 tasks.register<Copy>("copyWebAssets") {
     from(webOut)
-    into(layout.projectDirectory.dir("src/main/assets/www"))
+    // The exported site sits at the assets ROOT, not in a subfolder, so that the
+    // absolute paths it emits (/_next/...) map to assets/_next/... when served
+    // through WebViewAssetLoader.
+    into(layout.projectDirectory.dir("src/main/assets"))
     doFirst {
         if (!webOut.exists()) {
             throw GradleException(
